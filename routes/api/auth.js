@@ -8,6 +8,9 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 const { check, validationResult } = require("express-validator");
 
+// @route    GET api/auth
+// @desc     Get user by token
+// @access   Private
 router.get("/", auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
@@ -18,6 +21,9 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
+// @route    POST api/auth
+// @desc     Authenticate user & get token
+// @access   Public
 router.post(
   "/",
   [
