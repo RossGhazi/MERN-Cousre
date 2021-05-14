@@ -103,4 +103,41 @@ router.post(
   }
 );
 
+//@route get api/profile/
+//@desc  get all prpfiles
+//@access public
+
+router.get("/", async (req, res) => {
+  try {
+    const profiles = await Profile.find().populate("user", ["name", "avatar"]);
+    res.json(profiles);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json("Server Error");
+  }
+});
+
+//@route get api/profile/user/:user_id
+//@desc  get  prpfile by user ID
+//@access public
+
+router.get("/user/:user_id", async (req, res) => {
+  try {
+    const profile = await Profile.findOne({
+      user: req.params.user_id,
+    }).populate("user", ["name", "avatar"]);
+    if (!profile) {
+      return res.status(400).json({ msg: "profile not found" });
+    }
+
+    res.json(profile);
+  } catch (err) {
+    console.error(err);
+    if (err.kind == "ObjectId") {
+      return res.status(500).json("profile not found");
+    }
+    res.status(500).json("Server Error");
+  }
+});
+
 module.exports = router;
