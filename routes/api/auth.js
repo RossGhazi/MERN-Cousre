@@ -9,7 +9,7 @@ const config = require("config");
 const { check, validationResult } = require("express-validator");
 
 // @route    GET api/auth
-// @desc     Get user by token
+// @desc     Get user if they have correct token
 // @access   Private
 router.get("/", auth, async (req, res) => {
   try {
